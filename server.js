@@ -1,8 +1,10 @@
 var http = require('http');
 var fs = require('fs');
+var port = process.env.PORT || '8000';
 var server = http.createServer(function(req, res){
 	fs.readFile('index.html','utf-8', function(error, data){
 		res.writeHead(200,{'content-type': 'text/html'});
+		res.write('<script>var port='+port+'</script>');
 		res.write(data);
 		res.end();		
 	})
@@ -16,10 +18,6 @@ messageArray = [];
 numUsers = 0;
 io.sockets.on('connect', function(socket){
 	numUsers++;
-	io.sockets.emit('message_to_client',{
-		numUsers: numUsers
-	});
-
 	socket.on('message_to_server', function(data){
 		var date = new Date();
 		console.log(date);
@@ -31,28 +29,8 @@ io.sockets.on('connect', function(socket){
 	})
 })
 
-var port = normalizePort(process.env.PORT || '8000');
 
 server.listen(port);
 console.log('Listening on port 8000.');
 
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
