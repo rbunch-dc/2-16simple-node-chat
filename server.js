@@ -31,5 +31,7 @@ io.sockets.on('connect', function(socket){
 	})
 })
 
-server.listen(21000);
+var port = normalizePort(process.env.PORT || '8000');
+
+server.listen(port);
 console.log('Listening on port 8000.');
