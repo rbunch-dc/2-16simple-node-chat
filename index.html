@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+	<script type="text/javascript">
+		
+	var socketio = io.connect('http://10.150.51.117:21000/');
+
+	socketio.on('message_to_client', function(data){
+		document.getElementById('chat-window').innerHTML += ('<div class="im">' + data.message + ' - Sent at ' + data.date + '</div>');
+		console.log(data);
+	});
+
+	console.log(socketio);
+
+	function sendMessage(){
+		var message = document.getElementById('message').value;
+		socketio.emit('message_to_server',{message: message})
+		event.preventDefault();
+	}
+
+	</script>
+
+</head>
+<body>
+
+	<h1>Chat Program!!</h1>
+
+	<div id="chat-window"></div>
+
+	<form onsubmit="sendMessage()">
+		<input type="text" id="message" placeholder="Type your message here">
+	</form>
+
+</body>
+</html>
+
+
+
